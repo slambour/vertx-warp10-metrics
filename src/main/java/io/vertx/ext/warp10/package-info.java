@@ -77,7 +77,7 @@
  * ----
  *
  * The configuration of sensision lib is given with JVM properties throw Vert.x's JVM. The configuration below force the internal scheduler to write periodically the
- * metrics on filesystem instead of http pooling (production case).
+ * metrics on filesystem instead of http pooling (used in production).
  * Don't forget metric activation if you use the Vert.x command line interface.
  *
  * ----
