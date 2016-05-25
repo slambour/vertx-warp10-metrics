@@ -46,7 +46,7 @@
  *
  * And Gradle users, to their build file:
  *
- * [source,groovy,subs="+attributes"]
+ * [source,subs="+attributes"]
  * ----
  * compile '${maven.groupId}:${maven.artifactId}:${maven.version}'
  * ----
@@ -72,22 +72,22 @@
  * Why Docker ? You can install and configure with binaries from bintray. The docker image have Warp10's tools installed and pre-configured.
  * But, please remember, it's a developer image.
  *
- * ---
+ * ----
  * docker run --volume=/var/warp10:/data -p 8080:8080 -p 8081:8081 -d -i warp10/warp10:1.0.5
- * ---
+ * ----
  *
- * The configuration of the sensision agent is given with JVM properties. The configuration below force the internal scheduler to write periodically the
+ * The configuration of sensision lib is given with JVM properties throw Vert.x's JVM. The configuration below force the internal scheduler to write periodically the
  * metrics on filesystem instead of http pooling (production case).
- * Don't forget the command line activation if needed.
+ * Don't forget metric activation if you use the Vert.x command line interface.
  *
- *
- * ---
+ * ----
+ * -Dvertx.metrics.options.enabled=true
  * -Dsensision.home=/var/warp10/sensision/data
  * -Dsensision.events.dir=/var/warp10/sensision/data/metrics
  * -Dsensision.dump.period=60000
  * -Dsensision.dump.currentts=true
  * -Dsensision.dump.onexit=true
- * ---
+ * ----
  *
  * == Accessing your data
  *
@@ -98,17 +98,17 @@
  *
  * First get the sensision write token
  * * from docker
- * ---
+ * ----
  * docker exec  -t -i e463278182a5 cat /data/sensision/etc/sensision.conf | grep sensision.qf.token.default
- * ---
+ * ----
  * * or on local file system
- * ---
+ * ----
  * cat /var/warp10/sensision/etc/sensision.conf | grep sensision.qf.token.default
- * ---
+ * ----
  *
  * You must start Worf on the same Warp10's container (secret keys are shared in the configuration file)
  *
- * ---
+ * ----
  * docker exec -t -i <WARP10's CONTAINER_ID> worf.sh
  *
  * warp10> decodeToken
@@ -124,7 +124,7 @@
  * TOKEN INFO END
  * decodeTokenconvert to read token ? (yes)>yes
  * read token=fbRCRSimQ1a__Yqb1H05tw9xoAgriPzbnJfawVjj.cdWDD..... your sensision read token
- * ---
+ * ----
  *
  * You have now the sensision read token, you can starts playing with you metrics
  *
@@ -132,7 +132,7 @@
  * The best way is use http://127.0.0.1:8081[Quantum] web components exposed by the container
  * The example below fetch the 10 lasts values with classnames matches the regexp '~io.vertx.metrics.warp10.*'
  *
- * ---
+ * ----
  * 'YOUR READ TOKEN' 'token' STORE
  * [
  *   $token
@@ -140,7 +140,7 @@
  *   {}
  *   NOW -10
  * ] FETCH
- * ---
+ * ----
  *
  * == Vert.x core metrics
  *
