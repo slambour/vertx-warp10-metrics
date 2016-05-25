@@ -31,9 +31,10 @@ public class DatagramSocketMetricsImpl extends AbstractMetricsImpl implements Da
   public static String SENSISION_CLASS_BYTES_RECEIVED = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "datagram.socket.received.bytes";
   public static String SENSISION_CLASS_BYTES_SENT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "datagram.socket.sent.bytes";
   public static String SENSISION_CLASS_ERROR_COUNT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "datagram.socket.error.count";
-  public static String SENSISION_CLASS_LISTENING_HOST = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "datagram.listening.host";
-  public static String SENSISION_CLASS_LISTENING_PORT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "datagram.listening.port";
   public static String SENSISION_CLASS_LISTENING_NAME = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "datagram.listening.name";
+
+  public static String SENSISION_LABEL_HOST = "server.host";
+  public static String SENSISION_LABEL_PORT = "server.port";
 
   public DatagramSocketMetricsImpl(Map<String,String> defaults, Boolean enabled) {
     this.enabled = enabled;
@@ -42,10 +43,9 @@ public class DatagramSocketMetricsImpl extends AbstractMetricsImpl implements Da
 
   @Override
   public void listening(String localName, SocketAddress localAddress) {
-    long currentTime = Long.valueOf(System.currentTimeMillis() * Sensision.TIME_UNITS_PER_MS);
-    eventMetric(currentTime, SENSISION_CLASS_LISTENING_HOST, defaultLabels, localAddress.host());
-    eventMetric(currentTime, SENSISION_CLASS_LISTENING_PORT, defaultLabels, localAddress.port());
-    eventMetric(currentTime, SENSISION_CLASS_LISTENING_NAME, defaultLabels, localName);
+    defaultLabels.put(SENSISION_LABEL_HOST, localAddress.host());
+    defaultLabels.put(SENSISION_LABEL_PORT, Integer.toString(localAddress.port()));
+    eventMetric(SENSISION_CLASS_LISTENING_NAME, defaultLabels, localName);
   }
 
   @Override

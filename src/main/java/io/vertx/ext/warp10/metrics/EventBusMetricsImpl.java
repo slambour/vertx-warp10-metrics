@@ -34,15 +34,15 @@ public class EventBusMetricsImpl extends AbstractMetricsImpl implements EventBus
   public static String SENSISION_CLASS_EB_MESSAGE_COUNT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.handle.message.count";
   public static String SENSISION_CLASS_EB_MESSAGE_TIME = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.handle.message.time";
 
-  public static String SENSISION_CLASS_EB_MESSAGE_SENT_LOCAL_COUNT     = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.s.sent.local.count";
-  public static String SENSISION_CLASS_EB_MESSAGE_SENT_REMOTE_COUNT    = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.s.sent.remote.count";
-  public static String SENSISION_CLASS_EB_MESSAGE_PUBLISH_LOCAL_COUNT  = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.s.publish.local.count";
-  public static String SENSISION_CLASS_EB_MESSAGE_PUBLISH_REMOTE_COUNT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.s.publish.remote.count";
+  public static String SENSISION_CLASS_EB_MESSAGE_SENT_LOCAL_COUNT     = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.producer.sent.local.count";
+  public static String SENSISION_CLASS_EB_MESSAGE_SENT_REMOTE_COUNT    = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.producer.sent.remote.count";
+  public static String SENSISION_CLASS_EB_MESSAGE_PUBLISH_LOCAL_COUNT  = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.producer.publish.local.count";
+  public static String SENSISION_CLASS_EB_MESSAGE_PUBLISH_REMOTE_COUNT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.producer.publish.remote.count";
 
-  public static String SENSISION_CLASS_EB_MESSAGE_RECEIVED_LOCAL_COUNT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.r.received.local.count";
-  public static String SENSISION_CLASS_EB_MESSAGE_RECEIVED_REMOTE_COUNT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.r.received.remote.count";
-  public static String SENSISION_CLASS_EB_MESSAGE_DELIVERED_LOCAL_COUNT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.r.delivered.local.count";
-  public static String SENSISION_CLASS_EB_MESSAGE_DELIVERED_REMOTE_COUNT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.r.delivered.remote.count";
+  public static String SENSISION_CLASS_EB_MESSAGE_RECEIVED_LOCAL_COUNT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.consumer.received.local.count";
+  public static String SENSISION_CLASS_EB_MESSAGE_RECEIVED_REMOTE_COUNT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.consumer.received.remote.count";
+  public static String SENSISION_CLASS_EB_MESSAGE_DELIVERED_LOCAL_COUNT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.consumer.delivered.local.count";
+  public static String SENSISION_CLASS_EB_MESSAGE_DELIVERED_REMOTE_COUNT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.consumer.delivered.remote.count";
 
   public static String SENSISION_CLASS_EB_MESSAGE_SENT_BYTES = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.sent.bytes";
   public static String SENSISION_CLASS_EB_MESSAGE_RECEIVED_BYTES = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "eventbus.message.received.bytes";
@@ -74,6 +74,7 @@ public class EventBusMetricsImpl extends AbstractMetricsImpl implements EventBus
   @Override
   public void endHandleMessage(EventBusHandlerMetrics handler, Throwable failure) {
     Map<String, String> labels = new HashMap<>();
+    labels.putAll(defaultLabels);
     labels.put(SENSISION_CLASS_EB_LABEL_ADDRESS, handler.getAddress());
     
     if (failure != null) {
@@ -87,6 +88,7 @@ public class EventBusMetricsImpl extends AbstractMetricsImpl implements EventBus
   @Override
   public void messageSent(String address, boolean publish, boolean local, boolean remote) {
     Map<String, String> labels = new HashMap<>();
+    labels.putAll(defaultLabels);
     labels.put(SENSISION_CLASS_EB_LABEL_ADDRESS, address);
 
     if (publish && local) {
@@ -103,6 +105,7 @@ public class EventBusMetricsImpl extends AbstractMetricsImpl implements EventBus
   @Override
   public void messageReceived(String address, boolean publish, boolean local, int handlers) {
     Map<String, String> labels = new HashMap<>();
+    labels.putAll(defaultLabels);
     labels.put(SENSISION_CLASS_EB_LABEL_ADDRESS, address);
 
     if (local) {
@@ -123,6 +126,7 @@ public class EventBusMetricsImpl extends AbstractMetricsImpl implements EventBus
   @Override
   public void messageWritten(String address, int numberOfBytes) {
     Map<String, String> labels = new HashMap<>();
+    labels.putAll(defaultLabels);
     labels.put(SENSISION_CLASS_EB_LABEL_ADDRESS, address);
     updateMetric(SENSISION_CLASS_EB_MESSAGE_SENT_BYTES, labels, numberOfBytes);
   }
@@ -130,6 +134,7 @@ public class EventBusMetricsImpl extends AbstractMetricsImpl implements EventBus
   @Override
   public void messageRead(String address, int numberOfBytes) {
     Map<String, String> labels = new HashMap<>();
+    labels.putAll(defaultLabels);
     labels.put(SENSISION_CLASS_EB_LABEL_ADDRESS, address);
     updateMetric(SENSISION_CLASS_EB_MESSAGE_RECEIVED_BYTES, labels, numberOfBytes);
   }
@@ -137,6 +142,7 @@ public class EventBusMetricsImpl extends AbstractMetricsImpl implements EventBus
   @Override
   public void replyFailure(String address, ReplyFailure failure) {
     Map<String, String> labels = new HashMap<>();
+    labels.putAll(defaultLabels);
     labels.put(SENSISION_CLASS_EB_LABEL_ADDRESS, address);
     incrementMetric(SENSISION_CLASS_EB_MESSAGE_REPLY_ERROR_COUNT, labels);
   }

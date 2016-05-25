@@ -21,6 +21,7 @@ import io.warp10.sensision.Sensision;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Sébastien lambour
@@ -40,11 +41,13 @@ public class PoolMetricsImpl extends AbstractMetricsImpl implements PoolMetrics<
   public static String SENSISION_CLASS_ERROR_COUNT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "pool.error.count";
   public static String SENSISION_CLASS_WORKING_COUNT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "pool.working.count";
   public static String SENSISION_CLASS_WORKING_TIME  = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "pool.working.time";
+  public static String SENSISION_CLASS_WORKING  = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "pool.working";
 
-  public static String SENSISION_LABEL_POOL_TYPE = "POOLTYPE";
-  public static String SENSISION_LABEL_POOL_NAME = "POOLNAME";
+  public static String SENSISION_LABEL_POOL_TYPE = "type";
+  public static String SENSISION_LABEL_POOL_NAME = "name";
 
   private int maxPoolSize = -1;
+  private final AtomicLong working = new AtomicLong(0);
 
   public PoolMetricsImpl(String poolType, String poolName, int maxPoolSize, Map<String,String> defaults, Boolean enabled) {
     this.enabled = enabled;
@@ -74,6 +77,7 @@ public class PoolMetricsImpl extends AbstractMetricsImpl implements PoolMetrics<
     long currentNanoTime =  System.nanoTime();
     long queuedTime = currentNanoTime - nanoStart;
 
+    setMetric(SENSISION_CLASS_WORKING, defaultLabels,working.incrementAndGet());
     incrementMetric(SENSISION_CLASS_QUEUED_COUNT, defaultLabels);
     updateMetric(SENSISION_CLASS_QUEUED_TIME, defaultLabels, queuedTime);
 
@@ -83,6 +87,8 @@ public class PoolMetricsImpl extends AbstractMetricsImpl implements PoolMetrics<
   @Override
   public void end(Long nanoStart, boolean succeeded) {
     long workingTime = System.nanoTime() - nanoStart;
+
+    setMetric(SENSISION_CLASS_WORKING, defaultLabels,working.decrementAndGet());
     if (succeeded) {
       incrementMetric(SENSISION_CLASS_WORKING_COUNT, defaultLabels);
       updateMetric(SENSISION_CLASS_WORKING_TIME, defaultLabels, workingTime);
