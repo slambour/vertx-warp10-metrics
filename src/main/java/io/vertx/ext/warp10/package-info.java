@@ -25,7 +25,7 @@
  *
  * == Features
  *
- *  * Vert.x core tolls monitoring: TCT/HTTP client ans servers, {@link io.vertx.core.datagram.DatagramSocket}, {@link io.vertx.core.eventbus.EventBus} and pool metrics
+ *  * Vert.x core tools monitoring: TCT/HTTP client and servers, {@link io.vertx.core.datagram.DatagramSocket}, {@link io.vertx.core.eventbus.EventBus} and pool metrics
  *  will be collected by https://github.com/cityzendata/sensision[a local sensision agent]
  *  * Sensision agent forward metrics periodically to http://www.warp10.io[Warp10 platform]
  *
@@ -65,15 +65,12 @@
  *
  * == Configuration
  *
- * A Docker image containing a Warp10 platform is available on https://hub.docker.com/r/to_complete/warp10-docker[dockerhub]. This images contains a standalone version of Warp10
+ * A Docker image containing a Warp10 platform is available on https://hub.docker.com/r/warp10io/warp10/[dockerhub]. This images contains a standalone version of Warp10
  * and a pre-configured sensision agent. Data folder must be accessible outside the container, so sensision lib can directly write inside.
  * On a "production deployment" metrics are periodically collected throw http by sensision agent.
  *
- * Why Docker ? You can install and configure with binaries from bintray. The docker image have Warp10's tools installed and pre-configured.
- * But, please remember, it's a developer image.
- *
  * ----
- * docker run --volume=/var/warp10:/data -p 8080:8080 -p 8081:8081 -d -i warp10/warp10:1.0.5
+ * docker run --volume=/var/warp10:/data -p 8080:8080 -p 8081:8081 -d -i warp10io/warp10:1.0.6
  * ----
  *
  * The configuration of sensision lib is given with JVM properties throw Vert.x's JVM. The configuration below force the internal scheduler to write periodically the
