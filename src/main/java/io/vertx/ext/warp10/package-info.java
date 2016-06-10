@@ -70,7 +70,7 @@
  * On a "production deployment" metrics are periodically collected throw http by sensision agent.
  *
  * ----
- * docker run --volume=/var/warp10:/data -p 8080:8080 -p 8081:8081 -d -i warp10io/warp10:1.0.6
+ * docker run --volume=/var/warp10:/data -p 8080:8080 -p 8081:8081 -d -i warp10io/warp10:1.0.7
  * ----
  *
  * The configuration of sensision lib is given with JVM properties throw Vert.x's JVM. The configuration below force the internal scheduler to write periodically the
