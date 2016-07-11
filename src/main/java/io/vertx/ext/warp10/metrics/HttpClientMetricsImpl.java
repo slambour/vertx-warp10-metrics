@@ -21,7 +21,6 @@ import io.vertx.core.http.WebSocket;
 import io.vertx.core.net.SocketAddress;
 import io.vertx.core.spi.metrics.HttpClientMetrics;
 import io.vertx.ext.warp10.impl.VertxMetricsImpl;
-import io.warp10.sensision.Sensision;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +29,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * @author Sébastien lambour
  */
-public class HttpClientMetricsImpl extends AbstractMetricsImpl implements HttpClientMetrics<Long, SocketAddress, SocketAddress> {
+public class HttpClientMetricsImpl extends AbstractMetricsImpl implements HttpClientMetrics<Long, SocketAddress, SocketAddress, Void, Void> {
 
   public static String SENSISION_CLASS_REQUEST_TIME = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "client.http.request.time";
 
@@ -52,6 +51,8 @@ public class HttpClientMetricsImpl extends AbstractMetricsImpl implements HttpCl
   public static String SENSISION_CLASS_RESET_COUNT = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "client.http.reset.count";
   public static String SENSISION_CLASS_RESET_TIME = VertxMetricsImpl.SENSISION_CLASS_PREFIX + "client.http.reset.time";
 
+  public static String SENSISION_LABEL_HOST = "server.host";
+  public static String SENSISION_LABEL_PORT = "server.port";
   public static String SENSISION_LABEL_STATUS = "http.status";
 
   private final AtomicLong httpConnections = new AtomicLong(0);
@@ -63,14 +64,55 @@ public class HttpClientMetricsImpl extends AbstractMetricsImpl implements HttpCl
   }
 
   @Override
-  public Long requestBegin(SocketAddress socketMetric, SocketAddress localAddress, SocketAddress remoteAddress, HttpClientRequest request) {
+  public Void createEndpoint(String host, int port, int poolSize) {
+    return null;
+  }
+
+  @Override
+  public void closeEndpoint(String host, int port, Void aVoid) {
+  }
+
+
+  @Override
+  public Void enqueueRequest(Void aVoid) {
+    return null;
+  }
+
+  @Override
+  public void dequeueRequest(Void aVoid, Void aVoid2) {
+
+  }
+
+  @Override
+  public void endpointConnected(Void aVoid, SocketAddress socketAddress) {
+
+  }
+
+  @Override
+  public void endpointDisconnected(Void aVoid, SocketAddress socketAddress) {
+
+  }
+
+  @Override
+  public Long requestBegin(Void aVoid, SocketAddress socketAddress, SocketAddress socketAddress2, SocketAddress socketAddress1, HttpClientRequest httpClientRequest) {
     return System.nanoTime();
   }
 
   @Override
-  public Long responsePushed(SocketAddress socketMetric, SocketAddress localAddress, SocketAddress remoteAddress, HttpClientRequest request) {
+  public void requestEnd(Long aLong) {
+
+  }
+
+  @Override
+  public void responseBegin(Long aLong, HttpClientResponse httpClientResponse) {
+
+  }
+
+  @Override
+  public Long responsePushed(Void aVoid, SocketAddress socketMetric, SocketAddress localAddress, SocketAddress remoteAddress, HttpClientRequest request) {
     return null;
   }
+
 
   @Override
   public void requestReset(Long nanoStart) {
@@ -92,7 +134,7 @@ public class HttpClientMetricsImpl extends AbstractMetricsImpl implements HttpCl
   }
 
   @Override
-  public SocketAddress connected(SocketAddress socketMetric, WebSocket webSocket) {
+  public SocketAddress connected(Void aVoid, SocketAddress socketAddress, WebSocket webSocket) {
     long value = wsConnections.incrementAndGet();
     setMetric(SENSISION_CLASS_WEBSOCKETS, defaultLabels, value);
     incrementMetric(SENSISION_CLASS_WEBSOCKET_CONNECTED_COUNT, defaultLabels);

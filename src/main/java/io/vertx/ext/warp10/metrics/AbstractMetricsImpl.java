@@ -62,10 +62,9 @@ public class AbstractMetricsImpl {
     }
   }
 
-  public void eventMetric(String classname, Map<String, String> labels, String value) {
+  public void eventMetric(String classname, Map<String, String> labels, Object value) {
     if (enabled) {
       Sensision.event(classname, labels, value);
     }
   }
-
 }
