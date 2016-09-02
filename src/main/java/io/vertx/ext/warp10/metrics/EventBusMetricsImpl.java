@@ -67,6 +67,11 @@ public class EventBusMetricsImpl extends AbstractMetricsImpl implements EventBus
   }
 
   @Override
+  public void scheduleMessage(EventBusHandlerMetrics eventBusHandlerMetrics, boolean b) {
+
+  }
+
+  @Override
   public void beginHandleMessage(EventBusHandlerMetrics handler, boolean local) {
     handler.resetTimer();
   }

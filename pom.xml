@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>vertx-warp10-metrics</artifactId>
-    <version>3.3.0</version>
+    <version>3.3.2</version>
 
     <name>Vert.x Warp10 Metrics</name>
     <description>Sensision / Warp10 implementation of the Vert.x Metrics SPI</description>
