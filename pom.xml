@@ -39,8 +39,8 @@
 
     <properties>
         <!-- Versioning properties -->
-        <stack.version>3.3.0</stack.version>
-        <version.sensision>1.0.4</version.sensision>
+        <stack.version>3.3.2</stack.version>
+        <version.sensision>1.0.5</version.sensision>
         <maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
     </properties>
 
